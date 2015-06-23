@@ -1,0 +1,87 @@
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:columnCount="3"
+    android:rowCount="7"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.lipata.handycoffeeapp.MeasureFragment">
+
+    <TextView
+        android:id="@+id/howMuchCoffee"
+        android:text="@string/howMuchCoffee"
+        android:textSize="@dimen/abc_text_size_large_material"
+        android:textColor="@color/abc_primary_text_disable_only_material_light"
+        android:layout_columnSpan="3" />
+
+    <TextView
+        android:id="@+id/METRIC"
+        android:text="METRIC"
+        android:paddingTop="32dp"
+        android:textSize="@dimen/abc_text_size_large_material"
+        android:textColor="@color/primary_text_default_material_light"
+        android:layout_columnSpan="3"/>
+
+
+    <EditText
+        android:id="@+id/finalVolMetric"
+        android:hint="Enter mL"
+        android:inputType="number"
+        />
+
+    <TextView
+        android:id="@+id/mL"
+
+        android:text=" milliliters "
+        />
+
+    <Button
+        android:id="@+id/button_click_metric"
+        android:text="OK"
+        />
+
+    <TextView
+        android:id="@+id/youWillNeed_metric"
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:layout_columnSpan="3"/>
+
+    <TextView
+        android:id="@+id/US_CUSTOMARY"
+        android:text="US CUSTOMARY"
+
+        android:paddingTop="32dp"
+        android:textSize="@dimen/abc_text_size_large_material"
+        android:textColor="@color/primary_text_default_material_light"
+        android:layout_columnSpan="3" />
+
+    <EditText
+        android:id="@+id/finalVolOz"
+
+        android:hint="Enter Fl Oz"
+        android:inputType="number"/>
+
+    <TextView
+        android:id="@+id/fl_oz"
+
+        android:text=" fluid ounces "
+
+        android:gravity="center_vertical"
+        />
+
+    <Button
+        android:id="@+id/button_click_oz"
+
+        android:text="OK"
+       />
+
+    <TextView
+        android:id="@+id/youWillNeed_oz"
+        android:layout_columnSpan="3"
+        />
+
+
+</GridLayout>

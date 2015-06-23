@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Let\'s Make Some Coffee!</string>
+
+    <string name="title_section1">Measure</string>
+    <string name="title_section2">Brew</string>
+    <string name="title_section3">Track</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="howMuchCoffee">How much coffee would you like to make today?</string>
+
+    <string name="action_settings">Settings</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
