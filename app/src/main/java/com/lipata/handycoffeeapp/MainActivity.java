@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import java.util.Locale;
 
 
-public class MainActivity extends ActionBarActivity implements ActionBar.TabListener, MeasureFragment.OnFragmentInteractionListener {
+public class MainActivity extends ActionBarActivity implements ActionBar.TabListener, TrackFragment.OnFragmentInteractionListener, MeasureFragment.OnFragmentInteractionListener, BrewFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -133,14 +133,16 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+            switch (position) {
+                case 0:
+                    return MeasureFragment.newInstance("MeasureFragment", "Instance 1");
+                case 1:
+                    return BrewFragment.newInstance("BrewFragment", "Instance 1");
+                case 2:
+                    return TrackFragment.newInstance("TrackFragment", "Instance 1");
+                default:  return PlaceholderFragment.newInstance(position); // Not sure I understand this line, but it seems to work anyway
 
-            if(position == 0) // if the position is 0 we are returning the First tab
-            {
-                MeasureFragment tab1 = new MeasureFragment();
-                return tab1;
             }
-
-            return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override
