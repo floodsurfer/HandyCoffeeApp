@@ -9,12 +9,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.NumberPicker;
 
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 
@@ -28,11 +31,17 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
+
     SectionsPagerAdapter mSectionsPagerAdapter;
+    BrewFragment brewFragment = new BrewFragment();
+    final String LOG_TAG = "CoffeeApp-Main";
+    DecimalFormat mDecimalFormat = new DecimalFormat("#.##");
+
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
+
     ViewPager mViewPager;
 
     @Override
@@ -115,9 +124,24 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
+        Log.v(LOG_TAG, "Method called: onFragmentInteraction() " + uri.toString());
+        String[] newArray = setNumberPickerRange(Float.parseFloat(uri.toString()));
+        NumberPicker numberPicker = (NumberPicker)findViewById(R.id.number_picker);
+        numberPicker.setDisplayedValues(newArray);
+        numberPicker.setValue(newArray.length / 2);
     }
 
+    public String[] setNumberPickerRange(float groundCoffee){
+        String[] range = new String[21];
+        //The member array mRange will be populated with values -10 and +10 places from mGroundCoffee in 0.1 increments
+        for (int i=0; i< range.length; i++ ){
+            float startPoint= groundCoffee -1;
+            range[i]= mDecimalFormat.format(startPoint+((float) i/10)) ;
+            Log.v(LOG_TAG, "range "+Integer.toString(i)+" "+range[i]);   //TODO remove for production
+        }
+        return range;
+
+    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -137,7 +161,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 case 0:
                     return MeasureFragment.newInstance("MeasureFragment", "Instance 1");
                 case 1:
-                    return BrewFragment.newInstance("BrewFragment", "Instance 1");
+                    return brewFragment.newInstance("BrewFragment", "Instance 1");
                 case 2:
                     return TrackFragment.newInstance("TrackFragment", "Instance 1");
                 default:  return PlaceholderFragment.newInstance(position); // Not sure I understand this line, but it seems to work anyway

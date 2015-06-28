@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+
 //import android.app.Fragment;
 
 
@@ -23,6 +25,9 @@ import android.widget.TextView;
  * create an instance of this fragment.
  */
 public class MeasureFragment extends Fragment {
+
+    float COFFEE_STRENGTH_COEFFICIENT = 17.0f; //TODO this should be user definable
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -141,10 +146,12 @@ public class MeasureFragment extends Fragment {
         final EditText myEditField = (EditText) getView().findViewById(R.id.finalVolMetric);
         String x = myEditField.getText().toString();
         int intOfx = Integer.parseInt(x);
-        float coffee = (float) intOfx/17;
+        float coffee = (float) intOfx/COFFEE_STRENGTH_COEFFICIENT;
+        DecimalFormat df = new DecimalFormat("0.#");
+        coffee=Float.parseFloat(df.format(coffee));
         final TextView myTextView = (TextView) getView().findViewById(R.id.youWillNeed_metric);
         myTextView.setText("You'll need " + coffee + " grams of coffee grounds");
-
+        mListener.onFragmentInteraction(Uri.parse(Float.toString(coffee))); //Updates NumberPicker in BrewFragment
     }
 
     public void sendMessage_oz(View view) {

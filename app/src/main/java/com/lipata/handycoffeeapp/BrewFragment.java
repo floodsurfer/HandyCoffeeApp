@@ -5,9 +5,14 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.NumberPicker;
+import android.widget.TextView;
+
+import java.text.DecimalFormat;
 
 //import android.app.Fragment;
 
@@ -23,12 +28,23 @@ import android.view.ViewGroup;
 public class BrewFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM1 = "mGroundCoffee";
     private static final String ARG_PARAM2 = "param2";
+
+    DecimalFormat mDecimalFormat = new DecimalFormat("#.##");
+    View mFragmentView;
+    NumberPicker mNumberPicker;
+    String[] mRange = new String[21];
+    float mGroundCoffee = 20.0f;
+    final String LOG_TAG = "CoffeeApp-Brew";
+    float COFFEE_STRENGTH_COEFFICIENT = 17.0f; //TODO this should be user definable
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -62,18 +78,89 @@ public class BrewFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        Log.v(LOG_TAG, mParam1);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View fragmentView = inflater.inflate(R.layout.fragment_brew, container, false);
-
-
-        return fragmentView;
+        mFragmentView = inflater.inflate(R.layout.fragment_brew, container, false);
+        mNumberPicker = initializeNumberPicker(mFragmentView);
+        return mFragmentView;
     }
 
+    public NumberPicker initializeNumberPicker(View v){
+
+        setNumberPickerRange(); //Helper method to set up array mRange based on mGroundCoffee value
+
+        //Create NumberPicker with mRange array
+        NumberPicker np= (NumberPicker) v.findViewById(R.id.number_picker);
+        np.setMaxValue(mRange.length - 1);
+        np.setMinValue(0);
+        np.setWrapSelectorWheel(false);
+        np.setDisplayedValues(mRange);
+        np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        np.setValue(mRange.length / 2);
+
+        np.setOnScrollListener(new NumberPicker.OnScrollListener() {
+
+            private int npPosition;  //You need to init this value.
+
+            @Override
+            public void onScrollStateChange(NumberPicker numberPicker, int scrollState) {
+                if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
+
+                    //Update npPosition to the new value for the next scroll
+                    npPosition = numberPicker.getValue(); // This gives you the POSITION of the NumberPicker
+                    Log.d(LOG_TAG, "npPosition = " + Integer.toString(npPosition));
+
+                    float groundCoffeeFloat = Float.parseFloat(numberPicker.getDisplayedValues()[npPosition]);
+                    Log.d(LOG_TAG, "npPosition value in mRange = " + Float.toString(groundCoffeeFloat));
+
+                    //Update TextView to show how much water is needed
+                    float waterNeeded;
+                    waterNeeded = groundCoffeeFloat*COFFEE_STRENGTH_COEFFICIENT;
+                    Log.d(LOG_TAG, "waterNeeded = " + Float.toString(waterNeeded));
+
+                    final TextView waterNeededTextView = (TextView) mFragmentView.findViewById(R.id.water_needed);
+                    waterNeededTextView.setText(mDecimalFormat.format(waterNeeded));
+                }
+            }
+        });
+
+        return np;
+    }
+
+    public void setNumberPickerRange(){
+
+        //The member array mRange will be populated with values -10 and +10 places from mGroundCoffee in 0.1 increments
+        for (int i=0; i< mRange.length; i++ ){
+            float startPoint= mGroundCoffee -1;
+            mRange[i]=Float.toString(startPoint+((float) i/10));
+            Log.d(LOG_TAG, "mRange "+Integer.toString(i)+" "+mRange[i]);   //TODO remove for production
+        }
+
+    }
+
+/*
+    //Update Number Picker for new groundCoffee value
+    public void updateGroundCoffee(String data){
+
+        Log.d(LOG_TAG, "Method called: updateGroundCoffee() " + data);
+        mGroundCoffee = Float.parseFloat(data); //Update mGroundCoffee
+        setNumberPickerRange(); //Update range array with new mGroundCoffee
+        mNumberPicker.setDisplayedValues(mRange);
+
+
+    }
+
+    public NumberPicker getNumberPicker(){
+        return mNumberPicker;
+    }
+
+*/
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -115,7 +202,5 @@ public class BrewFragment extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
-
-
 
 }
