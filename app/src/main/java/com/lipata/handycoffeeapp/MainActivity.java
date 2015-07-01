@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.util.Locale;
@@ -36,6 +37,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     BrewFragment brewFragment = new BrewFragment();
     final String LOG_TAG = "CoffeeApp-Main";
     DecimalFormat mDecimalFormat = new DecimalFormat("#.##");
+    float COFFEE_STRENGTH_COEFFICIENT = 17.0f; //TODO this should be user definable
 
 
     /**
@@ -129,6 +131,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         NumberPicker numberPicker = (NumberPicker)findViewById(R.id.number_picker);
         numberPicker.setDisplayedValues(newArray);
         numberPicker.setValue(newArray.length / 2);
+        TextView textView = (TextView) findViewById(R.id.water_needed);
+        textView.setText(   Float.toString(Float.parseFloat(uri.toString())*COFFEE_STRENGTH_COEFFICIENT)   );
     }
 
     public String[] setNumberPickerRange(float groundCoffee){
