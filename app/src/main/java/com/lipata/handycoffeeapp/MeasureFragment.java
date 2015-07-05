@@ -79,21 +79,24 @@ public class MeasureFragment extends Fragment {
 
         //Button click listeners
         Button buttonMetric = (Button) fragmentView.findViewById(R.id.button_click_metric);
-        Button buttonOz = (Button) fragmentView.findViewById(R.id.button_click_oz);
+
+        //Retired function
+        //Button buttonOz = (Button) fragmentView.findViewById(R.id.button_click_oz);
 
         buttonMetric.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage_metric(v);
+                calculateCoffeeAmount(v);
             }
         });
 
+        /*  Retired function
         buttonOz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendMessage_oz(v);
             }
-        });
+        });  */
 
         return fragmentView;
     }
@@ -141,19 +144,20 @@ public class MeasureFragment extends Fragment {
     }
 
     //Button event handlers
-    public void sendMessage_metric(View view) {
-        // Do something in response to button
+    public void calculateCoffeeAmount(View view) {
         final EditText myEditField = (EditText) getView().findViewById(R.id.finalVolMetric);
         String x = myEditField.getText().toString();
-        int intOfx = Integer.parseInt(x);
-        float coffee = (float) intOfx/COFFEE_STRENGTH_COEFFICIENT;
-        DecimalFormat df = new DecimalFormat("0.#");
-        coffee=Float.parseFloat(df.format(coffee));
-        final TextView myTextView = (TextView) getView().findViewById(R.id.youWillNeed_metric);
-        myTextView.setText("You'll need " + coffee + " grams of coffee grounds");
-        mListener.onFragmentInteraction(Uri.parse(Float.toString(coffee))); //Updates NumberPicker in BrewFragment
+
+        if(!x.equals("")) {         //if statement to catch blank user input
+            float coffee = Float.parseFloat(x) / COFFEE_STRENGTH_COEFFICIENT;
+            DecimalFormat decimalFormat = new DecimalFormat("0.#");
+            final TextView myTextView = (TextView) getView().findViewById(R.id.youWillNeed_metric);
+            myTextView.setText("You'll need " + decimalFormat.format(coffee) + " grams of coffee grounds");
+            mListener.onFragmentInteraction(Uri.parse(decimalFormat.format(coffee))); //Updates NumberPicker in BrewFragment
+        }
     }
 
+    /*  Retired function
     public void sendMessage_oz(View view) {
         // Do something in response to button
         final EditText myEditField = (EditText) getView().findViewById(R.id.finalVolOz);
@@ -163,6 +167,6 @@ public class MeasureFragment extends Fragment {
         final TextView myTextView = (TextView) getView().findViewById(R.id.youWillNeed_oz);
         myTextView.setText("You'll need "+coffee+" grams of coffee grounds");
 
-    }
+    }*/
 
 }

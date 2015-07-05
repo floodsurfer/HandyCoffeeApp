@@ -49,6 +49,7 @@
         android:textSize="@dimen/abc_text_size_medium_material"
         android:layout_columnSpan="3"/>
 
+    <!--Retired functionality
     <TextView
         android:id="@+id/US_CUSTOMARY"
         android:text="US CUSTOMARY"
@@ -82,6 +83,6 @@
         android:id="@+id/youWillNeed_oz"
         android:layout_columnSpan="3"
         />
-
+-->
 
 </GridLayout>
