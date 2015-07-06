@@ -18,36 +18,72 @@
         android:textColor="@color/abc_primary_text_disable_only_material_light"
         android:layout_columnSpan="3" />
 
-    <TextView
-        android:id="@+id/METRIC"
-        android:text="METRIC"
-        android:paddingTop="32dp"
-        android:textSize="@dimen/abc_text_size_large_material"
-        android:textColor="@color/primary_text_default_material_light"
-        android:layout_columnSpan="3"/>
-
-
     <EditText
         android:id="@+id/finalVolMetric"
         android:hint="Enter mL"
-        android:inputType="number"
-        />
+        android:inputType="number" />
 
     <TextView
         android:id="@+id/mL"
+        android:text=" milliliters " />
 
-        android:text=" milliliters "
-        />
 
-    <Button
-        android:id="@+id/button_click_metric"
-        android:text="OK"
+    <TextView
+        android:paddingTop="16dp"
+        android:text="@string/strength"
+        android:textSize="@dimen/abc_text_size_large_material"
+        android:textColor="@color/abc_primary_text_disable_only_material_light"
+        android:layout_columnSpan="3"
         />
 
     <TextView
-        android:id="@+id/youWillNeed_metric"
+        android:text="@string/strength_description" />
+
+    <SeekBar
+        android:layout_column="0"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="2"
+        android:layout_width="270dp"
+        android:id="@+id/seekBar"
+        android:max="8"
+        android:progress="4"
+         />
+
+    <TextView
+        android:id="@+id/seek_bar_text_view"
         android:textSize="@dimen/abc_text_size_medium_material"
+        android:layout_gravity="right"
+        android:text="17:1"
+        android:layout_column="2"/>
+
+
+    <Button
+        android:id="@+id/button_click_metric"
+        android:text="CALCULATE"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="72dp"
+        android:layout_columnSpan="3"
+        android:layout_width="fill_parent"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:text="You will need"
         android:layout_columnSpan="3"/>
+    <TextView
+        android:id="@+id/youWillNeed_metric"
+        android:layout_gravity="center"
+        android:text="---"
+        android:textSize="32dp"
+        android:layout_columnSpan="3"
+        android:textStyle="bold" />
+
+    <TextView
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:text="of coffee grounds"
+        android:layout_columnSpan="3"
+        android:layout_gravity="right"/>
 
     <!--Retired functionality
     <TextView

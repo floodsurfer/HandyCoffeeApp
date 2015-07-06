@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bloom Brewing Buddy</string>
+    <string name="app_name">Pour Over Coffee Calc</string>
 
     <string name="title_section1">Measure</string>
     <string name="title_section2">Brew</string>
@@ -7,6 +7,9 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="howMuchCoffee">How much coffee would you like to make today?</string>
+    <string name="strength">Strength</string>
+    <string name="strength_description">coffee:water ratio</string>
+
 
     <string name="action_settings">Settings</string>
 

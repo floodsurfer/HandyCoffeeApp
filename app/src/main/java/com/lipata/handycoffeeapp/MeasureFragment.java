@@ -1,14 +1,17 @@
 package com.lipata.handycoffeeapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -26,7 +29,12 @@ import java.text.DecimalFormat;
  */
 public class MeasureFragment extends Fragment {
 
-    float COFFEE_STRENGTH_COEFFICIENT = 17.0f; //TODO this should be user definable
+    //float COFFEE_STRENGTH_COEFFICIENT = 17.0f; //TODO this should be user definable
+    private SeekBar seekBar;
+    private TextView seekBarTextView;
+    float mCoffeeStrength = 17f;
+    String[] mCoffeeStrengthRange = {"18.00", "17.75", "17.50", "17.25", "17.00", "16.75", "16.50", "16.25", "16.00"};
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -63,17 +71,22 @@ public class MeasureFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_measure, container, false);
 
@@ -86,7 +99,47 @@ public class MeasureFragment extends Fragment {
         buttonMetric.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                InputMethodManager inputManager = (InputMethodManager)
+                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+
                 calculateCoffeeAmount(v);
+            }
+        });
+
+        //Set up SeekBar
+        seekBar = (SeekBar) fragmentView.findViewById(R.id.seekBar);
+        seekBarTextView = (TextView) fragmentView.findViewById(R.id.seek_bar_text_view);
+        seekBarTextView.setText("1:" + mCoffeeStrength);
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress = 5;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+                progress = progresValue;
+                setCoffeeStrength(progress);
+                seekBarTextView.setText("1:" + mCoffeeStrengthRange[progress]);
+                //Toast.makeText(getActivity(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+               // Toast.makeText(getActivity(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
+                InputMethodManager inputManager = (InputMethodManager)
+                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                //Toast.makeText(getActivity(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -136,8 +189,6 @@ public class MeasureFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
 
-
-
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
@@ -149,14 +200,18 @@ public class MeasureFragment extends Fragment {
         String x = myEditField.getText().toString();
 
         if(!x.equals("")) {         //if statement to catch blank user input
-            float coffee = Float.parseFloat(x) / COFFEE_STRENGTH_COEFFICIENT;
+            float coffee = Float.parseFloat(x) / mCoffeeStrength;
             DecimalFormat decimalFormat = new DecimalFormat("0.#");
             final TextView myTextView = (TextView) getView().findViewById(R.id.youWillNeed_metric);
-            myTextView.setText("You'll need " + decimalFormat.format(coffee) + " grams of coffee grounds");
+            myTextView.setText(decimalFormat.format(coffee) + " grams");
             mListener.onFragmentInteraction(Uri.parse(decimalFormat.format(coffee))); //Updates NumberPicker in BrewFragment
         }
     }
 
+    public void setCoffeeStrength(int seekBarProgress){
+        mCoffeeStrength = Float.parseFloat(mCoffeeStrengthRange[seekBarProgress]);
+
+    }
     /*  Retired function
     public void sendMessage_oz(View view) {
         // Do something in response to button
