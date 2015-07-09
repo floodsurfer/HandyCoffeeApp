@@ -36,7 +36,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     SectionsPagerAdapter mSectionsPagerAdapter;
     BrewFragment brewFragment = new BrewFragment();
     final String LOG_TAG = "CoffeeApp-Main";
-    DecimalFormat mDecimalFormat = new DecimalFormat("#.##");
+    DecimalFormat mDecimalFormat = new DecimalFormat("#.0");
     float mCoffeeStrengthCoefficient = 17.0f; //TODO this should be user definable
 
 
