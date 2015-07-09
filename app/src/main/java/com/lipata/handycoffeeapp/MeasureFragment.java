@@ -29,7 +29,7 @@ import java.text.DecimalFormat;
  */
 public class MeasureFragment extends Fragment {
 
-    //float COFFEE_STRENGTH_COEFFICIENT = 17.0f; //TODO this should be user definable
+    //float mCoffeeStrengthCoefficient = 17.0f; //TODO this should be user definable
     private SeekBar seekBar;
     private TextView seekBarTextView;
     float mCoffeeStrength = 17f;
@@ -192,6 +192,8 @@ public class MeasureFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+
+        public void updateCoffeeStrengthCoefficient(float coffeeStrength);
     }
 
     //Button event handlers
@@ -210,6 +212,7 @@ public class MeasureFragment extends Fragment {
 
     public void setCoffeeStrength(int seekBarProgress){
         mCoffeeStrength = Float.parseFloat(mCoffeeStrengthRange[seekBarProgress]);
+        mListener.updateCoffeeStrengthCoefficient(mCoffeeStrength);
 
     }
     /*  Retired function

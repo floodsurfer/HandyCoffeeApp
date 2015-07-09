@@ -37,7 +37,7 @@ public class BrewFragment extends Fragment {
     String[] mRange = new String[21];
     float mGroundCoffee = 20.0f;
     final String LOG_TAG = "CoffeeApp-Brew";
-    float COFFEE_STRENGTH_COEFFICIENT = 17.0f; //TODO this should be user definable
+    float mCoffeeStrengthCoefficient; //TODO this should be user definable
 
 
     // TODO: Rename and change types of parameters
@@ -121,7 +121,9 @@ public class BrewFragment extends Fragment {
 
                     //Update TextView to show how much water is needed
                     float waterNeeded;
-                    waterNeeded = groundCoffeeFloat*COFFEE_STRENGTH_COEFFICIENT;
+                    mCoffeeStrengthCoefficient = ((MainActivity)getActivity()).getCoffeeStrengthCoefficient();
+                    waterNeeded = groundCoffeeFloat* mCoffeeStrengthCoefficient;
+                    Log.d(LOG_TAG, "mCoffeeStrengthCoefficient = " + mCoffeeStrengthCoefficient);
                     Log.d(LOG_TAG, "waterNeeded = " + Float.toString(waterNeeded));
 
                     final TextView waterNeededTextView = (TextView) mFragmentView.findViewById(R.id.water_needed);
@@ -196,7 +198,11 @@ public class BrewFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
 
-
+    public void updateCoffeeStrengthCoefficient(float coffeeStrength){
+        Log.d(LOG_TAG, "updateCoffeeStrengthCoefficient() called");
+        mCoffeeStrengthCoefficient = coffeeStrength;
+        Log.d(LOG_TAG, "Updated mCoffeeStrengthCoefficient = " + mCoffeeStrengthCoefficient);
+    }
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
