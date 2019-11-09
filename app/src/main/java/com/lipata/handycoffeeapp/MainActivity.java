@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity implements
     SectionsPagerAdapter mSectionsPagerAdapter;
     BrewFragment brewFragment = new BrewFragment();
     final String LOG_TAG = "CoffeeApp-Main";
-    DecimalFormat mDecimalFormat = new DecimalFormat("#.##");
-    float COFFEE_STRENGTH_COEFFICIENT = 17.0f; //TODO this should be user definable
+    DecimalFormat mDecimalFormat = new DecimalFormat("#.0");
+    float mCoffeeStrengthCoefficient = 17.0f; //TODO this should be user definable
 
 
     /**
@@ -134,9 +134,14 @@ public class MainActivity extends AppCompatActivity implements
         numberPicker.setDisplayedValues(newArray);
         numberPicker.setValue(newArray.length / 2);
         TextView textView = (TextView) findViewById(R.id.water_needed);
-        textView.setText(   Float.toString(Float.parseFloat(uri.toString())*COFFEE_STRENGTH_COEFFICIENT)   );
+        textView.setText(   Float.toString(Float.parseFloat(uri.toString())* mCoffeeStrengthCoefficient)   );
     }
 
+    public void updateCoffeeStrengthCoefficient(float coffeeStrength){
+        mCoffeeStrengthCoefficient = coffeeStrength;
+        brewFragment.updateCoffeeStrengthCoefficient(coffeeStrength);
+
+    }
     public String[] setNumberPickerRange(float groundCoffee){
         String[] range = new String[21];
         //The member array mRange will be populated with values -10 and +10 places from mGroundCoffee in 0.1 increments
@@ -227,6 +232,11 @@ public class MainActivity extends AppCompatActivity implements
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return rootView;
         }
+    }
+
+    public float getCoffeeStrengthCoefficient(){
+        return mCoffeeStrengthCoefficient;
+
     }
 
 }

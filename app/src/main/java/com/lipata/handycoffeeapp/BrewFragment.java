@@ -31,19 +31,17 @@ public class BrewFragment extends Fragment {
     private static final String ARG_PARAM1 = "mGroundCoffee";
     private static final String ARG_PARAM2 = "param2";
 
-    DecimalFormat mDecimalFormat = new DecimalFormat("#.##");
+    DecimalFormat mDecimalFormat = new DecimalFormat("#.0");
     View mFragmentView;
     NumberPicker mNumberPicker;
     String[] mRange = new String[21];
-    float mGroundCoffee = 20.0f;
+   // float mGroundCoffee = 20.0f;   // Unused
     final String LOG_TAG = "CoffeeApp-Brew";
-    float COFFEE_STRENGTH_COEFFICIENT = 17.0f; //TODO this should be user definable
-
+    float mCoffeeStrengthCoefficient;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
 
 
     private OnFragmentInteractionListener mListener;
@@ -87,13 +85,18 @@ public class BrewFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mFragmentView = inflater.inflate(R.layout.fragment_brew, container, false);
+
+        for (int i=0; i<mRange.length; i++) {
+            mRange[i]="-";
+        }
+
         mNumberPicker = initializeNumberPicker(mFragmentView);
         return mFragmentView;
     }
 
     public NumberPicker initializeNumberPicker(View v){
 
-        setNumberPickerRange(); //Helper method to set up array mRange based on mGroundCoffee value
+        //setNumberPickerRange(); //Helper method to set up array mRange based on mGroundCoffee value
 
         //Create NumberPicker with mRange array
         NumberPicker np= (NumberPicker) v.findViewById(R.id.number_picker);
@@ -112,20 +115,27 @@ public class BrewFragment extends Fragment {
             public void onScrollStateChange(NumberPicker numberPicker, int scrollState) {
                 if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
 
-                    //Update npPosition to the new value for the next scroll
-                    npPosition = numberPicker.getValue(); // This gives you the POSITION of the NumberPicker
-                    Log.d(LOG_TAG, "npPosition = " + Integer.toString(npPosition));
+                    //if statement to verify that the NumberPicker has been populated with numbers before attempting to do any math
+                   // String numberPickerDisplayedValue = numberPicker.getDisplayedValues()[0];
 
-                    float groundCoffeeFloat = Float.parseFloat(numberPicker.getDisplayedValues()[npPosition]);
-                    Log.d(LOG_TAG, "npPosition value in mRange = " + Float.toString(groundCoffeeFloat));
+                    if(!numberPicker.getDisplayedValues()[0].equals("-")) {
+                        //Update npPosition to the new value for the next scroll
+                        npPosition = numberPicker.getValue(); // This gives you the POSITION of the NumberPicker
+                        Log.d(LOG_TAG, "npPosition = " + Integer.toString(npPosition));
 
-                    //Update TextView to show how much water is needed
-                    float waterNeeded;
-                    waterNeeded = groundCoffeeFloat*COFFEE_STRENGTH_COEFFICIENT;
-                    Log.d(LOG_TAG, "waterNeeded = " + Float.toString(waterNeeded));
+                        float groundCoffeeFloat = Float.parseFloat(numberPicker.getDisplayedValues()[npPosition]);
+                        Log.d(LOG_TAG, "npPosition value in mRange = " + Float.toString(groundCoffeeFloat));
 
-                    final TextView waterNeededTextView = (TextView) mFragmentView.findViewById(R.id.water_needed);
-                    waterNeededTextView.setText(mDecimalFormat.format(waterNeeded));
+                        //Update TextView to show how much water is needed
+                        float waterNeeded;
+                        mCoffeeStrengthCoefficient = ((MainActivity) getActivity()).getCoffeeStrengthCoefficient();
+                        waterNeeded = groundCoffeeFloat * mCoffeeStrengthCoefficient;
+                        Log.d(LOG_TAG, "mCoffeeStrengthCoefficient = " + mCoffeeStrengthCoefficient);
+                        Log.d(LOG_TAG, "waterNeeded = " + Float.toString(waterNeeded));
+
+                        final TextView waterNeededTextView = (TextView) mFragmentView.findViewById(R.id.water_needed);
+                        waterNeededTextView.setText(mDecimalFormat.format(waterNeeded));
+                    }
                 }
             }
         });
@@ -133,7 +143,7 @@ public class BrewFragment extends Fragment {
         return np;
     }
 
-    public void setNumberPickerRange(){
+    /*public void setNumberPickerRange(){
 
         //The member array mRange will be populated with values -10 and +10 places from mGroundCoffee in 0.1 increments
         for (int i=0; i< mRange.length; i++ ){
@@ -142,7 +152,7 @@ public class BrewFragment extends Fragment {
             Log.d(LOG_TAG, "mRange "+Integer.toString(i)+" "+mRange[i]);   //TODO remove for production
         }
 
-    }
+    }*/
 
 /*
     //Update Number Picker for new groundCoffee value
@@ -196,7 +206,11 @@ public class BrewFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
 
-
+    public void updateCoffeeStrengthCoefficient(float coffeeStrength){
+        Log.d(LOG_TAG, "updateCoffeeStrengthCoefficient() called");
+        mCoffeeStrengthCoefficient = coffeeStrength;
+        Log.d(LOG_TAG, "Updated mCoffeeStrengthCoefficient = " + mCoffeeStrengthCoefficient);
+    }
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
