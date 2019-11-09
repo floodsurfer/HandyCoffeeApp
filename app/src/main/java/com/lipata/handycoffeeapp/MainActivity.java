@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,7 +22,9 @@ import java.text.DecimalFormat;
 import java.util.Locale;
 
 
-public class MainActivity extends ActionBarActivity implements ActionBar.TabListener, TrackFragment.OnFragmentInteractionListener, MeasureFragment.OnFragmentInteractionListener, BrewFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements
+        ActionBar.TabListener, TrackFragment.OnFragmentInteractionListener,
+        MeasureFragment.OnFragmentInteractionListener, BrewFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
